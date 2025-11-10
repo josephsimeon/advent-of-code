@@ -2,17 +2,37 @@ use std::collections::HashMap;
 use aoc_2015_3::Location;
 
 fn main() {
-    let mut houses: HashMap<(i32, i32), u32> = HashMap::new();
+    let mut solo_houses: HashMap<(i32, i32), u32> = HashMap::new();
+    let mut solo_house = (0, 0);
+    solo_houses.entry(solo_house).and_modify(|presents| *presents += 1).or_insert(1);
 
-    let mut house = (0, 0);
-    houses.entry(house).and_modify(|presents| *presents += 1).or_insert(1);
+    let mut duo_houses: (HashMap<(i32, i32), u32>, HashMap<(i32, i32), u32>) = (HashMap::new(), HashMap::new());
+    let mut duo_house = ((0, 0), (0, 0));
+    duo_houses.0.entry(duo_house.0).and_modify(|presents| *presents += 1).or_insert(1);
+    duo_houses.1.entry(duo_house.1).and_modify(|presents| *presents += 1).or_insert(1);
 
-    for ch in INPUT.chars() {
-        house.move_direction(ch);
-        houses.entry(house).and_modify(|presents| *presents += 1).or_insert(1);
+    for (i, ch) in INPUT.chars().enumerate() {
+        solo_house.move_direction(ch);
+        solo_houses.entry(solo_house).and_modify(|presents| *presents += 1).or_insert(1);
+
+        match i {
+            i if i % 2 == 0 => {
+                duo_house.0.move_direction(ch);
+                duo_houses.0.entry(duo_house.0).and_modify(|presents| *presents += 1).or_insert(1);
+            },
+            i if i % 2 == 1 => {
+                duo_house.1.move_direction(ch);
+                duo_houses.1.entry(duo_house.1).and_modify(|presents| *presents += 1).or_insert(1);
+            },
+            _ => continue,
+        }
     }
 
-    println!("{}", houses.len());
+    let mut combined_houses = HashMap::new();
+    combined_houses.extend(duo_houses.0);
+    combined_houses.extend(duo_houses.1);
+
+    println!("{}, {}", solo_houses.len(), combined_houses.len());
 
 }
 
