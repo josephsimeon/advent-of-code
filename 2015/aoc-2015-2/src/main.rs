@@ -10,15 +10,16 @@ fn collect_digits_from_str(slice: &str) -> Vec<u32> {
 }
 
 fn main() {
-    let mut wrapping_paper = 0;
+    let mut paper: (u32, u32) = (0, 0);
 
     for line in INPUT.lines() {
         let dimension: Vec<u32> = collect_digits_from_str(line);
 
-        wrapping_paper += calculate_wrapping_paper(dimension[0], dimension[1], dimension[2]);
+        paper.0 += calculate_wrapping_paper(dimension[0], dimension[1], dimension[2]);
+        paper.1 += calculate_ribbon_paper(dimension[0], dimension[1], dimension[2]);
     }
 
-    println!("{wrapping_paper}");
+    println!("{paper:?}");
 }
 
 #[cfg(test)]
