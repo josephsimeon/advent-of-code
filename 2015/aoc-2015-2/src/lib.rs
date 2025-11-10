@@ -39,6 +39,12 @@ fn find_smallest_sides(length: u32, width: u32, height: u32) -> (u32, u32) {
     (smallest, small)
 }
 
+pub fn calculate_ribbon_paper(length: u32, width: u32, height: u32) -> u32 {
+    let sides = find_smallest_sides(length, width, height);
+
+    (length * width * height) + (sides.0 + sides.0 + sides.1 + sides.1)
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -77,5 +83,15 @@ mod test {
     #[test]
     fn test_1x7x5_smallest_sides() {
         assert_eq!(find_smallest_sides(1, 7, 5), (1, 5));
+    }
+
+    #[test]
+    fn test_2x3x4_ribbon() {
+        assert_eq!(calculate_ribbon_paper(2, 3, 4), 34);
+    }
+
+    #[test]
+    fn test_1x1x10_ribbon() {
+        assert_eq!(calculate_ribbon_paper(1, 1, 10), 14);
     }
 }
