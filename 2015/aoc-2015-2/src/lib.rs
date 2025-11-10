@@ -28,6 +28,11 @@ mod test {
     fn test_2x3x4() {
         assert_eq!(calculate_wrapping_paper(2, 3, 4), 58);
     }
+
+    #[test]
+    fn test_1x1x10() {
+        assert_eq!(calculate_wrapping_paper(1, 1, 10), 43);
+    }
  
     #[test]
     fn test_smallest_2x3x4() {
