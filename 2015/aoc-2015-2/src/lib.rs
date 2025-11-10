@@ -26,6 +26,19 @@ fn get_areas(length: u32, width: u32, height: u32) -> Vec<u32> {
     area
 }
 
+fn find_smallest_sides(length: u32, width: u32, height: u32) -> (u32, u32) {
+    let mut smallest = length;
+    let mut small = width;
+
+    if smallest > height {
+        smallest = height;
+    } else if small > height {
+        small = height;
+    }
+
+    (smallest, small)
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -49,5 +62,20 @@ mod test {
     #[test]
     fn test_2x3x4_areas() {
         assert_eq!(get_areas(2, 3, 4), vec![6, 12, 8]);
+    }
+
+    #[test]
+    fn test_2x3x4_smallest_sides() {
+        assert_eq!(find_smallest_sides(2, 3, 4), (2, 3));
+    }
+
+    #[test]
+    fn test_1x1x10_smallest_sides() {
+        assert_eq!(find_smallest_sides(1, 1, 10), (1, 1));
+    }
+
+    #[test]
+    fn test_1x7x5_smallest_sides() {
+        assert_eq!(find_smallest_sides(1, 7, 5), (1, 5));
     }
 }
