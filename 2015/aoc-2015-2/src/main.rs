@@ -1,3 +1,5 @@
+use aoc_2015_2::calculate_wrapping_paper;
+
 fn collect_digits_from_str(slice: &str) -> Vec<u32> {
     let conversion: Vec<u32> = slice
         .split('x')
