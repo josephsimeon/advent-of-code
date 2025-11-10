@@ -1,9 +1,5 @@
 pub fn calculate_wrapping_paper(length: u32, width: u32, height: u32) -> u32 {
-    let mut area: Vec<u32> = Vec::new();
-
-    area.push(length * width);
-    area.push(width * height);
-    area.push(height * length);
+    let area = get_areas(length, width, height);
 
     let smallest = find_smallest_area(&area);
 
@@ -18,6 +14,16 @@ fn find_smallest_area(areas: &Vec<u32>) -> u32 {
     }
 
     smallest
+}
+
+fn get_areas(length: u32, width: u32, height: u32) -> Vec<u32> {
+    let mut area: Vec<u32> = Vec::new();
+
+    area.push(length * width);
+    area.push(width * height);
+    area.push(height * length);
+
+    area
 }
 
 #[cfg(test)]
@@ -38,5 +44,10 @@ mod test {
     fn test_smallest_2x3x4() {
         let test: Vec<u32> = vec![6, 8, 12];
         assert_eq!(find_smallest_area(&test), 6);
+    }
+
+    #[test]
+    fn test_2x3x4_areas() {
+        assert_eq!(get_areas(2, 3, 4), vec![6, 12, 8]);
     }
 }
