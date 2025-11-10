@@ -31,6 +31,16 @@ fn does_string_contain_double_letters(string: &str, num: u32) -> bool {
     false
 }
 
+fn does_string_contain_bad(string: &str, bad_strings: Vec<&str>) -> bool {
+    for bad_string in bad_strings {
+        if string.contains(bad_string) {
+            return false;
+        }
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -48,5 +58,6 @@ mod test {
         let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
         assert_eq!(does_string_contain_vowels(test, 3), true);
         assert_eq!(does_string_contain_double_letters(test, 1), true);
+        assert_eq!(does_string_contain_bad(test, bad), false); 
     }
 }
