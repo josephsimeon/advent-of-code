@@ -1,4 +1,4 @@
-use aoc_2015_2::calculate_wrapping_paper;
+use aoc_2015_2::{calculate_wrapping_paper, calculate_ribbon_paper};
 
 fn collect_digits_from_str(slice: &str) -> Vec<u32> {
     let conversion: Vec<u32> = slice
@@ -34,6 +34,7 @@ mod test {
     fn test_2x3x4() {
         let test: Vec<u32> = collect_digits_from_str("2x3x4");
         assert_eq!(calculate_wrapping_paper(test[0], test[1], test[2]), 58);
+        assert_eq!(calculate_ribbon_paper(test[0], test[1], test[2]), 34);
     }
 }
 

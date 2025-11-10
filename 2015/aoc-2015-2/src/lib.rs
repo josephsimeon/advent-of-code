@@ -26,17 +26,18 @@ fn get_areas(length: u32, width: u32, height: u32) -> Vec<u32> {
     area
 }
 
-fn find_smallest_sides(length: u32, width: u32, height: u32) -> (u32, u32) {
-    let mut smallest = length;
-    let mut small = width;
+fn find_smallest_perimeter(length: u32, width: u32, height: u32) -> (u32, u32) {
+    let mut sides: (u32, u32) = (length, width);
 
-    if smallest > height {
-        smallest = height;
-    } else if small > height {
-        small = height;
+    if 2*(sides.0 + sides.1) > 2*(length + height) {
+        sides = (length, height);
     }
 
-    (smallest, small)
+    if 2*(sides.0 + sides.1) > 2*(width + height) {
+        sides = (width, height);
+    }
+
+    sides
 }
 
 pub fn calculate_ribbon_paper(length: u32, width: u32, height: u32) -> u32 {
@@ -72,12 +73,12 @@ mod test {
 
     #[test]
     fn test_2x3x4_smallest_sides() {
-        assert_eq!(find_smallest_sides(2, 3, 4), (2, 3));
+        assert_eq!(find_smallest_perimeter(2, 3, 4), (2, 3));
     }
 
     #[test]
     fn test_1x1x10_smallest_sides() {
-        assert_eq!(find_smallest_sides(1, 1, 10), (1, 1));
+        assert_eq!(find_smallest_perimeter(1, 1, 10), (1, 1));
     }
 
     #[test]
