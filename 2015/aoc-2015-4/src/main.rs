@@ -17,7 +17,7 @@ fn find_hash(secret_key: &str, pattern: &str) -> u64 {
 
 
 fn main() {
-    println!("Hello, world!");
+    println!("{}", find_hash("yzbqklnj", "00000"));
 }
 
 #[cfg(test)]
