@@ -43,11 +43,11 @@ fn process_lighting_instruction(instruction: &str) -> (LightInstruction, (u16, u
 }
 
 fn main() {
-    let mut lights: HashMap<(u16, u16), bool> = HashMap::new();
+    let mut lights: HashMap<(u16, u16), (bool, u32)> = HashMap::new();
 
     for i in 0..1000 {
         for j in 0..1000 {
-            lights.insert((i, j), false);
+            lights.insert((i, j), (false, 0));
         }
     }
 
@@ -55,16 +55,25 @@ fn main() {
         let instruction = process_lighting_instruction(line);
         for i in instruction.1.0..=instruction.1.1 {
             for j in instruction.2.0..=instruction.2.1 {
-                lights.entry((i, j)).and_modify(|light| {
+                lights.entry((i, j)).and_modify(|(light, bright)| {
                     match instruction.0 {
-                        LightInstruction::On => *light = true,
-                        LightInstruction::Off => *light = false,
+                        LightInstruction::On => {
+                            *light = true;
+                            *bright += 1;
+                        },
+                        LightInstruction::Off => {
+                            *light = false;
+                            if *bright > 0 {
+                                *bright -= 1;
+                            }
+                        },
                         LightInstruction::Toggle => {
                             if *light == true {
                                 *light = false;
                             } else {
                                 *light = true;
                             }
+                            *bright += 2;
                         },
                     }
                 });
@@ -72,7 +81,9 @@ fn main() {
         }
     }
 
-    println!("{}", lights.values().filter(|&light| *light == true).count());
+    let count = lights.values().filter(|&(light, _)| *light == true).count();
+    let sum: u32 = lights.values().map(|&(_, bright)| bright).sum();
+    println!("{}, {}", count, sum);
 }
 
 #[cfg(test)]
