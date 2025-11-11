@@ -64,23 +64,13 @@ fn does_string_contain_pair_substring(string: &str) -> bool {
 }
 
 fn does_string_contain_mirrored_substring(string: &str) -> bool {
-    let mut chars = string.chars();
-    let mut char_1 = chars.next().unwrap();
-    let mut char_2 = chars.next().unwrap();
-    let mut char_3 = chars.next().unwrap();
+    let chars_iter = string.chars();
+    let chars_offset_iter = string.chars().skip(2);
 
-    for ch in chars {
-        if char_1 == char_3 {
+    for (c1, c2) in chars_iter.zip(chars_offset_iter) {
+        if c1 == c2 {
             return true;
         }
-
-        char_1 = char_2;
-        char_2 = char_3;
-        char_3 = ch;
-    }
-
-    if char_1 == char_3 {
-        return true;
     }
 
     false
