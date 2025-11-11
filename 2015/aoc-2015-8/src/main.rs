@@ -25,19 +25,56 @@ fn byte_count_minus_chars(string: &str) -> usize {
    string.len() - count
 }
 
+fn new_byte_count_minus_length(string: &str) -> usize {
+    let mut counter = 0;
+    let mut new_string: String = String::new();
+
+    for (i, ch) in string.chars().enumerate() {
+        match ch {
+            '"' => {
+                if i == 0 {
+                    new_string.push('"');
+                    counter += 1;
+                }
+
+                new_string.push_str("\"");
+                counter += 2;
+
+                if i + 1 == string.len() {
+                    new_string.push('"');
+                    counter += 1;
+                }
+            },
+            '\\' => {
+                new_string.push_str("\\\\");
+                counter += 2;
+            },
+            _ => {
+                new_string.push(ch);
+                counter += 1;
+            },
+        }
+    }
+
+    counter - string.len()
+}
+
 fn main() {
         let buf = BufReader::new(File::open("src/input.txt").expect("Unable to open src/input.txt"));
         
-        let mut sum = 0;
+        let mut sum = (0, 0);
 
         for line in buf.lines() {
             match line {
-                Ok(parsed) => sum += byte_count_minus_chars(&parsed),
+                Ok(parsed) => {
+                    sum.0 += byte_count_minus_chars(&parsed);
+                    sum.1 += new_byte_count_minus_length(&parsed);
+                },
                 _ => (),
             }
         }
 
-        println!("{}", sum);
+        println!("{:?}", sum);
 }
 
 #[cfg(test)]
@@ -45,7 +82,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test() {
+    fn test_1() {
         let buf = BufReader::new(File::open("src/test.txt").expect("Unable to open src/test.txt"));
         
         let mut sum = 0;
@@ -58,5 +95,21 @@ mod test {
         }
 
         assert_eq!(sum, 12);
+    }
+
+    #[test]
+    fn test_2() {
+        let buf = BufReader::new(File::open("src/test.txt").expect("Unable to open src/test.txt"));
+        
+        let mut sum = 0;
+        
+        for line in buf.lines() {
+            match line {
+                Ok(parsed) => sum += new_byte_count_minus_length(&parsed),
+                _ => (),
+            }
+        }
+
+        assert_eq!(sum, 19);
     }
 }
