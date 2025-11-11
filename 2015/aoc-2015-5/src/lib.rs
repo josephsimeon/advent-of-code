@@ -140,4 +140,16 @@ mod test {
         assert_eq!(does_string_contain_mirrored_substring(test), true);
         assert_eq!(is_string_new_nice(test), false);
     }
+
+    #[test]
+    fn test_a3() {
+        let test: &str = "aaa";
+        assert_eq!(is_string_new_nice(test), false);
+    }
+
+    #[test]
+    fn test_a4() {
+        let test: &str = "aaaa";
+        assert_eq!(is_string_new_nice(test), true);
+    }
 }
