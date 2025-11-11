@@ -16,8 +16,8 @@ fn does_string_contain_vowels(string: &str, num: u32) -> bool {
 }
 
 fn does_string_contain_double_letters(string: &str) -> bool {
-    let chars_iter = s.chars();
-    let chars_offset_iter = s.chars().skip(1);
+    let chars_iter = string.chars();
+    let chars_offset_iter = string.chars().skip(1);
 
     for (c1, c2) in chars_iter.zip(chars_offset_iter) {
         if c1 == c2 {
