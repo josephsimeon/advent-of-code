@@ -31,7 +31,7 @@ fn does_string_contain_double_letters(string: &str, num: u32) -> bool {
     false
 }
 
-fn does_string_contain_bad(string: &str, bad_strings: Vec<&str>) -> bool {
+fn does_string_contain_bad(string: &str, bad_strings: &Vec<&str>) -> bool {
     for bad_string in bad_strings {
         if string.contains(bad_string) {
             return false;
@@ -41,7 +41,7 @@ fn does_string_contain_bad(string: &str, bad_strings: Vec<&str>) -> bool {
     true
 }
 
-pub fn is_nice_string(unknown: &str, bad_strings: Vec<&str>) -> bool {
+pub fn is_string_nice(unknown: &str, bad_strings: &Vec<&str>) -> bool {
     does_string_contain_vowels(unknown, 3) 
     & does_string_contain_double_letters(unknown, 1)
     & does_string_contain_bad(unknown, bad_strings) 
@@ -55,14 +55,14 @@ mod test {
     fn test_ugknbfddgicrmopn() {
         let test: &str = "ugknbfddgicrmopn";
         let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
-        assert_eq!(is_nice_string(test, bad), true); 
+        assert_eq!(is_string_nice(test, &bad), true); 
     }
 
     #[test]
     fn test_aaa() {
         let test: &str = "aaa";
         let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
-        assert_eq!(is_nice_string(test, bad), true); 
+        assert_eq!(is_string_nice(test, &bad), true); 
     }
 
     #[test]
@@ -70,7 +70,7 @@ mod test {
         let test: &str = "jchzalrnumimnmhp";
         let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
         assert_eq!(does_string_contain_double_letters(test, 1), false);
-        assert_eq!(is_nice_string(test, bad), false);
+        assert_eq!(is_string_nice(test, &bad), false);
     }
 
     #[test]
@@ -79,6 +79,6 @@ mod test {
         let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
         assert_eq!(does_string_contain_vowels(test, 3), true);
         assert_eq!(does_string_contain_double_letters(test, 1), true);
-        assert_eq!(does_string_contain_bad(test, bad), false); 
+        assert_eq!(does_string_contain_bad(test, &bad), false); 
     }
 }
