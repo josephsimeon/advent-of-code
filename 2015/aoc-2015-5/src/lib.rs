@@ -66,6 +66,30 @@ fn does_string_contain_pair_substring(string: &str) -> bool {
     false
 }
 
+fn does_string_contain_mirrored_substring(string: &str) -> bool {
+    let mut chars = string.chars();
+    let mut char_1 = chars.next().unwrap();
+    let mut char_2 = chars.next().unwrap();
+    let mut char_3 = chars.next().unwrap();
+
+    for ch in chars {
+        if char_1 == char_3 {
+            return true;
+        }
+
+        char_1 = char_2;
+        char_2 = char_3;
+        char_3 = ch;
+    }
+
+    false
+}
+
+pub fn is_string_new_nice(unknown: &str) -> bool {
+    does_string_contain_pair_substring(unknown)
+    & does_string_contain_mirrored_substring(unknown)
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -105,5 +129,15 @@ mod test {
     fn test_qjhvhtzxzqqjkmpb() {
         let test: &str = "qjhvhtzxzqqjkmpb";
         assert_eq!(does_string_contain_pair_substring(test), true);
+        assert_eq!(does_string_contain_mirrored_substring(test), true);
+        assert_eq!(is_string_new_nice(test), true);
+    }
+
+    #[test]
+    fn test_ieodomkazucvgmuy() {
+        let test: &str = "ieodomkazucvgmuy";
+        assert_eq!(does_string_contain_pair_substring(test), false);
+        assert_eq!(does_string_contain_mirrored_substring(test), true);
+        assert_eq!(is_string_new_nice(test), false);
     }
 }
