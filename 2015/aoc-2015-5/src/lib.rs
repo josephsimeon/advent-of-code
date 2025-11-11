@@ -82,6 +82,10 @@ fn does_string_contain_mirrored_substring(string: &str) -> bool {
         char_3 = ch;
     }
 
+    if char_1 == char_3 {
+        return true;
+    }
+
     false
 }
 
@@ -150,6 +154,18 @@ mod test {
     #[test]
     fn test_a4() {
         let test: &str = "aaaa";
+        assert_eq!(is_string_new_nice(test), true);
+    }
+
+    #[test]
+    fn test_hpmbxtpfosbsjixt() {
+        let test: &str = "hpmbxtpfosbsjixt";
+        assert_eq!(is_string_new_nice(test), true);
+    }
+
+    #[test]
+    fn test_dwmxqudvxqdenrur() {
+        let test: &str = "dwmxqudvxqdenrur";
         assert_eq!(is_string_new_nice(test), true);
     }
 }

@@ -1,14 +1,15 @@
-use aoc_2015_5::is_string_nice;
+use aoc_2015_5::{is_string_nice, is_string_new_nice};
 
 fn main() {
-    let mut counter = 0;
+    let mut counter = (0, 0);
     let bad: Vec<&str> = vec!["ab", "cd", "pq", "xy"];
 
     for line in INPUT.lines() {
-        if is_string_nice(line, &bad) { counter += 1 };
+        if is_string_nice(line, &bad) { counter.0 += 1 };
+        if is_string_new_nice(line) { counter.1 += 1 };
     }
 
-    println!("{}", counter);
+    println!("{:?}", counter);
 }
 
 static INPUT: &str = "sszojmmrrkwuftyv
