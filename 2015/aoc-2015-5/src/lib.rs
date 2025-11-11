@@ -45,19 +45,14 @@ pub fn is_string_nice(unknown: &str, bad_strings: &Vec<&str>) -> bool {
 }
 
 fn does_string_contain_pair_substring(string: &str) -> bool {
-    let mut chars = string.chars();
-    let mut char_1 = chars.next().unwrap();
-    let mut char_2 = chars.next().unwrap();
+    let chars_iter = string.chars();
+    let chars_offset_iter = string.chars().skip(1);
 
-    for ch in chars {
-        let substring = format!("{}{}", char_1, char_2);
-        let occurences = string.match_indices(&substring).count();
-        if occurences > 1 {
+    for (c1, c2) in chars_iter.zip(chars_offset_iter) {
+        let substring = format!("{c1}{c2}");
+        if string.match_indices(&substring).count() > 1 {
             return true;
         }
-
-        char_1 = char_2;
-        char_2 = ch;
     }
 
     false
