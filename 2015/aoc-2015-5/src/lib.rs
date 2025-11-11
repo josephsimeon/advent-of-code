@@ -47,6 +47,25 @@ pub fn is_string_nice(unknown: &str, bad_strings: &Vec<&str>) -> bool {
     & does_string_contain_bad(unknown, bad_strings) 
 }
 
+fn does_string_contain_pair_substring(string: &str) -> bool {
+    let mut chars = string.chars();
+    let mut char_1 = chars.next().unwrap();
+    let mut char_2 = chars.next().unwrap();
+
+    for ch in chars {
+        let substring = format!("{}{}", char_1, char_2);
+        let occurences = string.match_indices(&substring).count();
+        if occurences > 1 {
+            return true;
+        }
+
+        char_1 = char_2;
+        char_2 = ch;
+    }
+
+    false
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -80,5 +99,11 @@ mod test {
         assert_eq!(does_string_contain_vowels(test, 3), true);
         assert_eq!(does_string_contain_double_letters(test, 1), true);
         assert_eq!(does_string_contain_bad(test, &bad), false); 
+    }
+
+    #[test]
+    fn test_qjhvhtzxzqqjkmpb() {
+        let test: &str = "qjhvhtzxzqqjkmpb";
+        assert_eq!(does_string_contain_pair_substring(test), true);
     }
 }
