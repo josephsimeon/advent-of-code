@@ -25,6 +25,23 @@ fn process_range_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
     invalid
 }
 
+fn does_substring_repeat(number: u64) -> bool {
+    let stringify = number.to_string();
+    let len = stringify.len();
+
+    for n in 1..=(len / 2) {
+        let pattern = &stringify[..n];
+
+        if len % n == 0 {
+            for i in (n..len).step_by(n) {
+                if pattern == &stringify[i..(i + n)] { return true };
+            }
+        }
+    }
+
+    false
+}
+
 fn search_for_invalid_ids(ids: &str) -> u64 {
     let mut invalid: Vec<u64> = Vec::new();
 
@@ -61,6 +78,21 @@ mod test {
         let test = process_range_for_invalid_ids((11, 22));
         assert_eq!(test[0], 11);
         assert_eq!(test[1], 22);
+    }
+
+    #[test]
+    fn test_id_11() {
+        assert!(does_substring_repeat(11));
+    }
+
+    #[test]
+    fn test_id_121212() {
+        assert!(does_substring_repeat(121212));
+    }
+
+    #[test]
+    fn test_id_12222() {
+        assert!(!does_substring_repeat(12222));
     }
 }
 
