@@ -1,20 +1,20 @@
-const DIAL_POSITIONS: i16 = 100;
+const DIAL_POSITIONS: i32 = 100;
 
 fn main() {
     let answer = count_dial_position(PUZZLE, 50, 0);
     println!("{:?}", answer);
 }
 
-fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> (u16, u16) {
+fn count_dial_position(puzzle: &str, position: i32, position_check: i32) -> (u32, u32) {
     let mut dial = position;
     let mut counter = 0;
-    let mut passed_zero = 0;
+    let mut zeroes_passed = 0;
 
     for line in puzzle.lines() {
         let direction = &line[0..1];
         let digits = &line[1..];
         
-        let num = digits.parse::<i16>().expect("Unable to parse {digits}, not a valid number");
+        let num = digits.parse::<i32>().expect("Unable to parse {digits}, not a valid number");
         let sign = match direction {
             "L" => -1,
             _ => 1,
@@ -25,7 +25,7 @@ fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> (u16
         if dial == position_check { counter += 1 };
     }
 
-    (counter, counter + passed_zero)
+    (counter, counter + zeroes_passed)
 }
 
 #[cfg(test)]
@@ -44,14 +44,9 @@ R14
 L82";
 
     #[test]
-    fn test_1() {
+    fn test() {
         let test = count_dial_position(TEST_PUZZLE, 50, 0);
         assert_eq!(test.0, 3);
-    }
-
-    #[test]
-    fn test_2() {
-        let test = count_dial_position(TEST_PUZZLE, 50, 0);
         assert_eq!(test.1, 6);
     }
 }
