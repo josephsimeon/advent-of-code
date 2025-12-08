@@ -1,5 +1,5 @@
 fn main() {
-    println!("{}", search_for_invalid_ids(PUZZLE));
+    println!("{:?}", search_for_invalid_ids(PUZZLE));
 }
 
 fn get_id_range(range: &str) -> (u64, u64) {
@@ -42,17 +42,21 @@ fn does_substring_repeat(number: u64) -> bool {
     false
 }
 
-fn search_for_invalid_ids(ids: &str) -> u64 {
+fn search_for_invalid_ids(ids: &str) -> (u64, u64) {
     let mut invalid: Vec<u64> = Vec::new();
+    let mut invalid_extended: Vec<u64> = Vec::new();
 
     for line in ids.split(',') {
         let range = get_id_range(line);
 
         let mut ids = process_range_for_invalid_ids(range);
         invalid.append(&mut ids);
+
+        let mut extended_ids = process_range_for_extended_invalid_ids(range);
+        invalid_extended.append(&mut extended_ids);
     }
 
-    invalid.iter().sum::<u64>()
+    (invalid.iter().sum::<u64>(), invalid_extended.iter().sum::<u64>())
 }
 
 #[cfg(test)]
@@ -63,7 +67,9 @@ mod test {
 
     #[test]
     fn test() {
-        assert_eq!(search_for_invalid_ids(TEST_PUZZLE), 1227775554);
+        let test = search_for_invalid_ids(TEST_PUZZLE);
+        assert_eq!(test.0, 1227775554);
+        assert_eq!(test.1, 4174379265);
     }
 
     #[test]
