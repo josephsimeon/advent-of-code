@@ -10,6 +10,21 @@ fn get_id_range(range: &str) -> (u64, u64) {
         (start, end)
 }
 
+fn search_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
+    let mut invalid: Vec<u64> = Vec::new();
+
+    for number in range.0..range.1 + 1 {
+        let stringify = number.to_string();
+
+        let half = stringify.len() / 2;
+        if stringify[..half] == stringify[half..] {
+            invalid.push(number);
+        }
+    }
+
+    invalid
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -23,14 +38,8 @@ mod test {
         for line in TEST_PUZZLE.split(',') {
             let range = get_id_range(line);
 
-            for number in range.0..range.1 + 1 {
-                let stringify = number.to_string();
-
-                let half = stringify.len() / 2;
-                if stringify[..half] == stringify[half..] {
-                    invalid.push(number);
-                }
-            }
+            let mut ids = search_for_invalid_ids(range);
+            invalid.append(&mut ids);
         }
 
         assert_eq!(invalid.iter().sum::<u64>(), 1227775554);
@@ -41,5 +50,12 @@ mod test {
         let test = get_id_range("11-22");
         assert_eq!(test.0, 11);
         assert_eq!(test.1, 22);
+    }
+
+    #[test]
+    fn test_invalid_ids() {
+        let test = search_for_invalid_ids((11, 22));
+        assert_eq!(test[0], 11);
+        assert_eq!(test[1], 22);
     }
 }
