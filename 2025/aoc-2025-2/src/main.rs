@@ -25,17 +25,33 @@ fn process_range_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
     invalid
 }
 
+fn process_range_for_extended_invalid_ids(range: (u64, u64)) -> Vec<u64> {
+    let mut invalid: Vec<u64> = Vec::new();
+
+    for number in range.0..range.1 + 1 {
+        if does_substring_repeat(number) { 
+            invalid.push(number); 
+        };
+    }
+
+    invalid
+}
+
 fn does_substring_repeat(number: u64) -> bool {
     let stringify = number.to_string();
     let len = stringify.len();
 
-    for n in 1..=(len / 2) {
+    'check: for n in 1..=(len / 2) {
         let pattern = &stringify[..n];
 
         if len % n == 0 {
             for i in (n..len).step_by(n) {
-                if pattern == &stringify[i..(i + n)] { return true };
+                if pattern != &stringify[i..(i + n)] {
+                    continue 'check;
+                }
             }
+
+            return true;
         }
     }
 
