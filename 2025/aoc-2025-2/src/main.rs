@@ -3,7 +3,7 @@ fn main() {
 }
 
 fn get_id_range(range: &str) -> (u64, u64) {
-        let numbers: Vec<&str> = line.split('-').collect();
+        let numbers: Vec<&str> = range.split('-').collect();
         let start = numbers[0].parse::<u64>().expect("Unable to parse digits for start");
         let end = numbers[1].parse::<u64>().expect("Unable to parse digits for end");
 
@@ -36,6 +36,7 @@ mod test {
         assert_eq!(invalid.iter().sum::<u64>(), 1227775554);
     }
 
+    #[test]
     fn test_id_range() {
         let test = get_id_range("11-22");
         assert_eq!(test.0, 11);
