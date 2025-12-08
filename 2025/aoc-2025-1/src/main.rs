@@ -1,4 +1,4 @@
-const DIAL_POSITIONS: u16 = 100;
+const DIAL_POSITIONS: i16 = 100;
 
 fn main() {
     println!("{}", count_dial_position(PUZZLE, 50, 0));
