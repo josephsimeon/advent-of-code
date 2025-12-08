@@ -1,5 +1,7 @@
+const DIAL_POSITIONS: u16 = 100;
+
 fn main() {
-    println!("Hello, world!");
+    println!("{}", count_dial_position(PUZZLE, 50, 0));
 }
 
 fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> u16 {
@@ -13,9 +15,9 @@ fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> u16 
 
         if sign == "L" { num *= -1 };
 
-        dial = (dial - num) % 100;
+        dial = (dial - num) % DIAL_POSITIONS;
 
-        if dial == 0 { counter += 1 };
+        if dial == position_check { counter += 1 };
     }
 
     counter
