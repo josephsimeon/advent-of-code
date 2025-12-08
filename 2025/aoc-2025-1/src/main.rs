@@ -20,8 +20,15 @@ fn count_dial_position(puzzle: &str, position: i32, position_check: i32) -> (u32
             _ => 1,
         };
 
-        dial = (dial + num * sign).rem_euclid(100);
+        zeroes_passed += num.div_euclid(DIAL_POSITIONS) as u32;
+        let num = num.rem_euclid(DIAL_POSITIONS);
 
+        let dial_turn = dial + num * sign;
+        if dial != 0 && (dial_turn < 0 || dial_turn > DIAL_POSITIONS) { 
+            zeroes_passed += 1;
+        };
+
+        dial = dial_turn.rem_euclid(DIAL_POSITIONS);
         if dial == position_check { counter += 1 };
     }
 
