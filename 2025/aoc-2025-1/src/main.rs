@@ -18,16 +18,16 @@ fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> (u16
         if sign == "L" { num *= -1 };
 
         let dial_turn = dial + num;
-        if !(dial_turn > 0 && dial_turn < DIAL_POSITIONS) && dial != 0 {
+        if dial != 0 && (dial_turn < 0 || dial_turn > 100) { 
             passed_zero += 1;
-        }
+            println!("{num}");
+        };
 
         dial = dial_turn.rem_euclid(100);
-
         if dial == position_check { counter += 1 };
     }
 
-    (counter, passed_zero)
+    (counter, counter + passed_zero)
 }
 
 #[cfg(test)]
