@@ -11,18 +11,17 @@ fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> (u16
     let mut passed_zero = 0;
 
     for line in puzzle.lines() {
-        let sign = &line[0..1];
+        let direction = &line[0..1];
         let digits = &line[1..];
-        let mut num = digits.parse::<i16>().expect("Unable to parse {digits}, not a valid number");
-
-        if sign == "L" { num *= -1 };
-
-        let dial_turn = dial + num;
-        if dial != 0 && (dial_turn < 0 || dial_turn > DIAL_POSITIONS) { 
-            passed_zero += 1;
+        
+        let num = digits.parse::<i16>().expect("Unable to parse {digits}, not a valid number");
+        let sign = match direction {
+            "L" => -1,
+            _ => 1,
         };
 
-        dial = dial_turn.rem_euclid(100);
+        dial = (dial + num * sign).rem_euclid(100);
+
         if dial == position_check { counter += 1 };
     }
 
