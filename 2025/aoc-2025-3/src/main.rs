@@ -10,28 +10,17 @@ fn find_total_joltage(input: &str) -> u32 {
 
         let mut first = 0;
         for i in 0..(line.len() - 1) {
-            let parsed = line
-                .chars()
-                .nth(i)
-                .expect("could not get char")
-                .to_string()
-                .parse::<u8>()
-                .expect("Could not parse digit");
+            let digit = get_digit_from_slice(line, i);
 
-            if first < parsed {
-                first = parsed;
+            if first < digit {
+                first = digit;
+
                 let mut second = 0;
                 for j in (i + 1)..line.len() {
-                let parsed = line
-                    .chars()
-                    .nth(j)
-                    .expect("could not get char")
-                    .to_string()
-                    .parse::<u8>()
-                    .expect("Could not parse digit");
+                    let digit = get_digit_from_slice(line, j);
 
-                    if second < parsed {
-                        second = parsed;
+                    if second < digit {
+                        second = digit;
 
                         let number = first * 10 + second;
                         if largest_number < number {
@@ -46,6 +35,16 @@ fn find_total_joltage(input: &str) -> u32 {
     }
 
     largest_joltage.iter().sum::<u32>()
+}
+
+fn get_digit_from_slice(slice: &str, position: usize) -> u8 {
+    slice
+        .chars()
+        .nth(position)
+        .expect("Could not get char")
+        .to_string()
+        .parse::<u8>()
+        .expect("Could not parse digit")
 }
 
 #[cfg(test)]
