@@ -1,12 +1,14 @@
 const DIAL_POSITIONS: i16 = 100;
 
 fn main() {
-    println!("{}", count_dial_position(PUZZLE, 50, 0));
+    let answer = count_dial_position(PUZZLE, 50, 0);
+    println!("{:?}", answer);
 }
 
-fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> u16 {
+fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> (u16, u16) {
     let mut dial = position;
     let mut counter = 0;
+    let mut passed_zero = 0;
 
     for line in puzzle.lines() {
         let sign = &line[0..1];
@@ -15,12 +17,17 @@ fn count_dial_position(puzzle: &str, position: i16, position_check: i16) -> u16 
 
         if sign == "L" { num *= -1 };
 
-        dial = (dial - num) % DIAL_POSITIONS;
+        let dial_turn = dial + num;
+        if !(dial_turn > 0 && dial_turn < DIAL_POSITIONS) && dial != 0 {
+            passed_zero += 1;
+        }
+
+        dial = dial_turn.rem_euclid(100);
 
         if dial == position_check { counter += 1 };
     }
 
-    counter
+    (counter, passed_zero)
 }
 
 #[cfg(test)]
@@ -40,7 +47,14 @@ L82";
 
     #[test]
     fn test_1() {
-        assert_eq!(count_dial_position(TEST_PUZZLE, 50, 0), 3);
+        let test = count_dial_position(TEST_PUZZLE, 50, 0);
+        assert_eq!(test.0, 3);
+    }
+
+    #[test]
+    fn test_2() {
+        let test = count_dial_position(TEST_PUZZLE, 50, 0);
+        assert_eq!(test.1, 6);
     }
 }
 
