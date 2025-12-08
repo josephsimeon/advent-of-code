@@ -10,7 +10,7 @@ fn get_id_range(range: &str) -> (u64, u64) {
         (start, end)
 }
 
-fn search_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
+fn process_range_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
     let mut invalid: Vec<u64> = Vec::new();
 
     for number in range.0..range.1 + 1 {
@@ -25,6 +25,19 @@ fn search_for_invalid_ids(range: (u64, u64)) -> Vec<u64> {
     invalid
 }
 
+fn search_for_invalid_ids(ids: &str) -> u64 {
+    let mut invalid: Vec<u64> = Vec::new();
+
+    for line in ids.split(',') {
+        let range = get_id_range(line);
+
+        let mut ids = process_range_for_invalid_ids(range);
+        invalid.append(&mut ids);
+    }
+
+    invalid.iter().sum::<u64>()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -33,16 +46,7 @@ mod test {
 
     #[test]
     fn test() {
-        let mut invalid: Vec<u64> = Vec::new();
-
-        for line in TEST_PUZZLE.split(',') {
-            let range = get_id_range(line);
-
-            let mut ids = search_for_invalid_ids(range);
-            invalid.append(&mut ids);
-        }
-
-        assert_eq!(invalid.iter().sum::<u64>(), 1227775554);
+        assert_eq!(search_for_invalid_ids(TEST_PUZZLE), 1227775554);
     }
 
     #[test]
@@ -54,7 +58,7 @@ mod test {
 
     #[test]
     fn test_invalid_ids() {
-        let test = search_for_invalid_ids((11, 22));
+        let test = process_range_for_invalid_ids((11, 22));
         assert_eq!(test[0], 11);
         assert_eq!(test[1], 22);
     }
