@@ -48,7 +48,9 @@ mod test {
 
     #[test]
     fn test() {
-        assert_eq!(find_total_joltage(TEST_PUZZLE), 357);
+        let test = find_total_joltage(TEST_PUZZLE);
+        assert_eq!(test.0, 357);
+        assert_eq!(test.1, 3121910778619);
     }
 }
 
