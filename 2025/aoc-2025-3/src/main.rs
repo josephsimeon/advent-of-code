@@ -2,49 +2,37 @@ fn main() {
     println!("{}", find_total_joltage(PUZZLE));
 }
 
-fn find_total_joltage(input: &str) -> u32 {
-    let mut largest_joltage: Vec<u32> = Vec::new();
+fn find_total_joltage(input: &str) -> u64 {
+    let mut largest_joltage: Vec<u64> = Vec::new();
 
     for line in input.lines() {
-        let mut largest_number = 0;
+        largest_joltage.push(get_largest_joltage(line, 3));
+    }
 
-        let mut first = 0;
-        for i in 0..(line.len() - 1) {
-            let digit = get_digit_from_slice(line, i);
+    largest_joltage.iter().sum::<u64>()
+}
 
-            if first < digit {
-                first = digit;
+fn get_largest_joltage(input: &str, digit_size: usize) -> u64 {
+    let mut scan: String = String::new();
+    let mut scanned_position: usize = 0;
+    let scannable_area = input.len() - digit_size;
+    for n in 0..digit_size {
+        let mut largest_scanned = '0';
 
-                let mut second = 0;
-                for j in (i + 1)..line.len() {
-                    let digit = get_digit_from_slice(line, j);
+        let start = scanned_position + n;
+        for i in start..=(scannable_area + n) {
+            let scanned = input.chars().nth(i).expect("Could not get char");
 
-                    if second < digit {
-                        second = digit;
-
-                        let number = first * 10 + second;
-                        if largest_number < number {
-                            largest_number = number;
-                        }
-                    }
-                }
+            if scanned > largest_scanned {
+                largest_scanned = scanned;
+                scanned_position = i;
             }
         }
 
-        largest_joltage.push(largest_number as u32);
+        scan.push(largest_scanned);
     }
 
-    largest_joltage.iter().sum::<u32>()
-}
-
-fn get_digit_from_slice(slice: &str, position: usize) -> u8 {
-    slice
-        .chars()
-        .nth(position)
-        .expect("Could not get char")
-        .to_string()
-        .parse::<u8>()
-        .expect("Could not parse digit")
+    scan.parse::<u64>().expect("Can't parse string")
 }
 
 #[cfg(test)]
