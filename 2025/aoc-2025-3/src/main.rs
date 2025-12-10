@@ -1,15 +1,16 @@
 fn main() {
-    println!("{}", find_total_joltage(PUZZLE));
+    println!("{:?}", find_total_joltage(PUZZLE));
 }
 
-fn find_total_joltage(input: &str) -> u64 {
-    let mut largest_joltage: Vec<u64> = Vec::new();
+fn find_total_joltage(input: &str) -> (u64, u64) {
+    let mut largest_joltage: (Vec<u64>, Vec<u64>) = (Vec::new(), Vec::new());
 
     for line in input.lines() {
-        largest_joltage.push(get_largest_joltage(line, 2));
+        largest_joltage.0.push(get_largest_joltage(line, 2));
+        largest_joltage.1.push(get_largest_joltage(line, 12));
     }
 
-    largest_joltage.iter().sum::<u64>()
+    (largest_joltage.0.iter().sum::<u64>(), largest_joltage.1.iter().sum::<u64>())
 }
 
 fn get_largest_joltage(input: &str, digit_size: usize) -> u64 {
