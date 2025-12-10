@@ -13,23 +13,24 @@ fn find_total_joltage(input: &str) -> u64 {
 }
 
 fn get_largest_joltage(input: &str, digit_size: usize) -> u64 {
-    let mut scan: String = String::new();
-    let mut scanned_position: usize = 0;
+    let mut scan: String = String::from("0");
     let scannable_area = input.len() - digit_size;
+    let mut search = 0;
+
     for n in 0..digit_size {
-        let mut largest_scanned = '0';
+        let mut joltage = '0';
+        let area = &input[(n + search)..=(scannable_area + n)];
+        let mut position = 0;
 
-        let start = scanned_position + n;
-        for i in start..=(scannable_area + n) {
-            let scanned = input.chars().nth(i).expect("Could not get char");
-
-            if scanned > largest_scanned {
-                largest_scanned = scanned;
-                scanned_position = i;
+        for (i, c) in area.chars().enumerate() {
+            if c > joltage {
+                joltage = c;
+                position = i;
             }
         }
 
-        scan.push(largest_scanned);
+        search += position;
+        scan.push(joltage);
     }
 
     scan.parse::<u64>().expect("Can't parse string")
