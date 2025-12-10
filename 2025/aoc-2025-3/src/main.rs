@@ -6,7 +6,7 @@ fn find_total_joltage(input: &str) -> u64 {
     let mut largest_joltage: Vec<u64> = Vec::new();
 
     for line in input.lines() {
-        largest_joltage.push(get_largest_joltage(line, 3));
+        largest_joltage.push(get_largest_joltage(line, 2));
     }
 
     largest_joltage.iter().sum::<u64>()
